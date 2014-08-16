@@ -39,7 +39,10 @@ func Launch(f func()) {
   servers.Add(1)
   go func() {
     defer servers.Done()
-    f()
+    if e:= f(); e != nil {
+      Println(name, "->", e)
+      syscall.Kill(syscall.Getpid(), syscall.SIGABRT)
+    }
   }()
 }
 
