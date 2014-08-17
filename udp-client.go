@@ -7,23 +7,20 @@ import (
 )
 
 var CRLF = ([]byte)("\n")
-var i int = 0
+
 
 func main() {
-  for i < 3000000 {
-    if address, e := net.ResolveUDPAddr("udp", ":1024"); e == nil {
+  if address, e := net.ResolveUDPAddr("udp", ":1024"); e == nil {
 
-      if server, e := net.DialUDP("udp", nil, address); e == nil {
-        defer server.Close()
-
+    if server, e := net.DialUDP("udp", nil, address); e == nil {
+      defer server.Close()
+      for b := 0; b < 3; b++ {
         if _, e = server.Write(CRLF); e == nil {
           if text, e := bufio.NewReader(server).ReadString('\n'); e == nil {
-            Printf("%v", text)
+            Printf("%v number: %v, connection: %v", text, i, b)
           }
         }
       }
-      i++
     }
   }
-
 }

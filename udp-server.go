@@ -5,7 +5,7 @@ import(
   "net"
 )
 
-var HELLO_WORLD = ([]byte)("Hello David a tua mae suka!\n")
+var HELLO_WORLD = ([]byte)("Hello David!\n")
 
 func main() {
   if address, e := net.ResolveUDPAddr("udp", ":1024"); e == nil {

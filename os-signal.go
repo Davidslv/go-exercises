@@ -25,21 +25,21 @@ func main() {
     Fprintf(w, message)
   })
 
-  Launch(func() {
-    ListenAndServe(ADDRESS, nil)
+  Launch("HTTP", func() error {
+    return ListenAndServe(ADDRESS, nil)
   })
 
-  Launch(func() {
-    ListenAndServeTLS(SECURE_ADDRESS, "cert.pem", "key.pem", nil)
+  Launch("HTTPS", func() error {
+    return ListenAndServeTLS(SECURE_ADDRESS, "cert.pem", "key.pem", nil)
   })
   servers.Wait()
 }
 
-func Launch(f func()) {
+func Launch(name string, f func() error) {
   servers.Add(1)
   go func() {
     defer servers.Done()
-    if e:= f(); e != nil {
+    if e := f(); e != nil {
       Println(name, "->", e)
       syscall.Kill(syscall.Getpid(), syscall.SIGABRT)
     }
